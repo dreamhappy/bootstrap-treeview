@@ -69,7 +69,8 @@
 		onNodeUnchecked: undefined,
 		onNodeUnselected: undefined,
 		onSearchComplete: undefined,
-		onSearchCleared: undefined
+		onSearchCleared: undefined,
+        onNodeClick: undefined //单击事件add by xxf 20190702
 	};
 
 	_default.options = {
@@ -199,7 +200,8 @@
 		this.$element.off('nodeUnselected');
 		this.$element.off('searchComplete');
 		this.$element.off('searchCleared');
-	};
+        this.$element.off('nodeClick'); //单击事件add by xxf 20190702
+    };
 
 	Tree.prototype.subscribeEvents = function () {
 
@@ -246,7 +248,12 @@
 		if (typeof (this.options.onSearchCleared) === 'function') {
 			this.$element.on('searchCleared', this.options.onSearchCleared);
 		}
-	};
+        //单击事件 add by xxf 20190702
+        if (typeof(this.options.onNodeClick) === 'function') {
+            this.$element.on('nodeClick', this.options.onNodeClick);
+        }
+        //单击事件 add by xxf 20190702
+    };
 
 	/*
 		Recurse the tree structure and ensure all nodes have
@@ -327,6 +334,7 @@
 
 			this.toggleExpandedState(node, _default.options);
 			this.render();
+			this.onClick(node, _default.options); //单击事件add by xxf 20190702
 		}
 		else if ((classList.indexOf('check-icon') !== -1)) {
 			
@@ -343,8 +351,15 @@
 
 			this.render();
 		}
+		this.onClick(node, _default.options); //单击事件add by xxf 20190702
 	};
-
+    //单击事件add by xxf 20190702
+    Tree.prototype.onClick = function(node, options) {
+        if (!node) return;
+        if (!options.silent) {
+            this.$element.trigger('nodeClick', $.extend(true, {}, node));
+        }
+    };
 	// Looks up the DOM for the closest parent list item to retrieve the
 	// data attribute nodeid, which is used to lookup the node in the flattened structure.
 	Tree.prototype.findNode = function (target) {
