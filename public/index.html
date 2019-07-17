@@ -452,7 +452,14 @@
 
 
         $('#treeview1').treeview({
-          data: defaultData
+          data: defaultData,
+          onNodeClick:function(event,node){
+            if(node.state.expanded){
+               $('#treeview1').treeview('collapseNode',node.nodeId);
+            }else{
+              $('#treeview1').treeview('expandNode',node.nodeId);
+            }
+          } 
         });
 
         $('#treeview2').treeview({
