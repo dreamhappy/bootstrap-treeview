@@ -1,0 +1,12 @@
+Running "qunit:all" (qunit) task
+Testing tests/tests.html ......................................OK
+Fatal error: Callback must be a function
+导致此问题的原因是由于nodejs版本升级到10.0以后导致的
+解决方案修改下面两文件中的内容：
+
+\node_modules\grunt-contrib-jasmine\tasks\ jasmine.js
+用unlinkSync替换 unlink  
+
+\node_modules\grunt-lib-phantomjs\lib\ phantomjs.js
+用 tempfile.unlinkSync 替换 tempfile.unlink  
+
